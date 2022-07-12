@@ -38,8 +38,9 @@ class MessageServiceTest {
         messageService.addMessage("Hello from admin to u2", u1, Set.of(u2), "", "", 0);
         messageService.addMessage("Hello from admin to u3", u1, Set.of(u3), "", "", 0);
         messageService.addMessage("Hello from u2 to u3", u2, Set.of(u3), "", "", 0);
-        messageService.addMessage("Hello from u3 to admin", u3, Set.of(u1), "", "", 0);
+        Message m_l = messageService.addMessage("Hello from u3 to admin", u3, Set.of(u1), "", "", 0);
         messageService.addMessage("Hello from u2 to admin", u2, Set.of(u1), "", "", 0);
+        long u2_id = m_l.getId();
         Assertions.assertEquals(5, messageRepository.findAll().size(), "Error add message");
 
         Pageable page = PageRequest.of(0, 10);
@@ -51,12 +52,12 @@ class MessageServiceTest {
         Assertions.assertEquals(3, u2Messages.size());
         List<Message> u3Messages = messageService.findAuthorMessageOrMessageForUser(u3, page).getContent();
         Assertions.assertEquals(3, u3Messages.size());
-        Assertions.assertEquals(7, u3Messages.get(0).getId());
+        Assertions.assertEquals(u2_id, u3Messages.get(0).getId());
         List<StatisticsUser> statistics = messageService.getStatisticsSendMessages();
         Assertions.assertNotNull(statistics);
         Assertions.assertEquals(3, statistics.size());
 
-        Assertions.assertEquals(7, Integer.parseInt(messageService.getLastID(u3)));
+        Assertions.assertEquals(u2_id, Integer.parseInt(messageService.getLastID(u3)));
         messageRepository.deleteAll();
         Assertions.assertEquals(0, messageRepository.findAll().size(), "Error remove message");
         userRepository.deleteAll();

@@ -36,7 +36,7 @@ public class User implements UserDetails {
     @Column(name = "lastVisited")
     private LocalDateTime visited;
 
-    @Column(name = "token")
+    @Column(name = "token", columnDefinition = "uuid")
     private UUID token;
     private Boolean enable;
 
