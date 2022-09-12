@@ -62,6 +62,7 @@ public class WebChatController {
         }
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", userService.getUsers(user));
+            model.addAttribute("online", activeUser.getUsers());
             return "form";
         }
         service.addMessage(msg.getText(), user,

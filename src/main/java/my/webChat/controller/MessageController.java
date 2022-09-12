@@ -116,6 +116,6 @@ public class MessageController {
         HttpHeaders headers = new HttpHeaders();
         String contentDisposition = "attachment; filename*=UTF-8''" + UriUtils.encodePath(fileName, "UTF-8");
         headers.set("Content-disposition", contentDisposition);
-        return ResponseEntity.ok().headers(headers).body(service.sendFile(uuid));
+        return ResponseEntity.ok().headers(headers).body(service.sendFile(uuid, user));
     }
 }

@@ -76,7 +76,13 @@ public class MessageService {
         return messages;
     }
 
-    public byte[] sendFile(String uuid) throws IOException {
+    public byte[] sendFile(String uuid, User user) throws IOException {
+        Optional<Message> optMessage = messageRepository.findFirstByFileName(uuid);
+        String errorMessage = "Error access to file " + uuid;
+        Message msg = optMessage.orElseThrow(() -> new IOException(errorMessage));
+        if((!msg.getAuthor().equals(user))&&(!msg.getReceivers().contains(user))) {
+            throw new IOException(errorMessage);
+        }
         File parent = new File(uploadFolder);
         File file = new File(parent, uuid);
         return Files.readAllBytes(file.toPath());

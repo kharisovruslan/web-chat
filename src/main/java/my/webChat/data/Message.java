@@ -36,8 +36,8 @@ public class Message {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> receivers;
 
-    @Size(min = 1, max = 4096, message = "size between 1 - 4096 chars")
-    @Column(name = "message_text", length = 4096)
+    @Size(min = 1, max = 131072, message = "size between 1 - 131072 chars")
+    @Column(name = "message_text", length = 131072)
     private String text;
 
     @Column(length = 1024)

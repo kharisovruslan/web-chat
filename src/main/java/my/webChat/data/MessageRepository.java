@@ -13,6 +13,7 @@ public interface MessageRepository extends PagingAndSortingRepository<Message, L
     Page<Message> findDistinctByAuthorOrReceiversOrderByCreateDesc(User author, User receiver, Pageable page);
     Optional<Message> findFirstByAuthorOrReceiversOrderByCreateDesc(User author, User receiver);
     Optional<Message> findFirstByReceiversOrderByCreateDesc(User receiver);
+    Optional<Message> findFirstByFileName(String fileName);
     @Query(value = "select distinct m from Message m join m.receivers r where (lower(m.text) like lower(CONCAT('%',:filter,'%'))) and ((m.author = :user) or (r = :user)) order by m.create")
     Page<Message> findByFilter(String filter, User user, Pageable page);
     List<Message> findAll();
