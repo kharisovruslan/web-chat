@@ -3,6 +3,7 @@ package my.webChat.controller;
 import my.webChat.data.Message;
 import my.webChat.data.User;
 import my.webChat.service.ActiveUser;
+import my.webChat.service.FileUtils;
 import my.webChat.service.MessageService;
 import my.webChat.service.UserService;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class MessageController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    FileUtils fileUtils;
+
     private static final Logger log = LoggerFactory.getLogger(MessageController.class);
 
     @GetMapping("list")
@@ -66,6 +70,7 @@ public class MessageController {
         }
         userService.updateVisited(user);
         activeUser.updateUser(user);
+        model.addAttribute("fileUtils", fileUtils);
         model.addAttribute("userId", user.getId());
         model.addAttribute("filter", f);
         model.addAttribute("pageMessages", pageMessages);
