@@ -41,7 +41,6 @@ import java.util.stream.IntStream;
 public class MessageController {
     @Autowired
     MessageService service;
-
     @Autowired
     ActiveUser activeUser;
 

@@ -56,7 +56,8 @@ and open the template in the editor.
                 <p th:utext="${m.text}" class="card-text"></p>
                 <div th:if="${!m.fileName.isEmpty()}">
                     <div th:if="${fileUtils.isFileImage(m.fileOrigName)}">
-                        <img th:src="@{messages/file(uuid=${m.fileName}, fileName=${m.fileOrigName})}" class="widthSet heightSet"></img>
+                        <img th:src="@{messages/file(uuid=${m.fileName}, fileName=${m.fileOrigName})}"
+                             class="widthSet heightSet"></img>
                     </div>
                     <a th:text="${m.fileOrigName + '(' + m.fileSize + ')'}"
                        th:href="@{messages/file(uuid=${m.fileName}, fileName=${m.fileOrigName})}"></a>

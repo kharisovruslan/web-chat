@@ -4,29 +4,44 @@ import my.webChat.data.Message;
 import my.webChat.data.User;
 import my.webChat.data.dto.UserMessage;
 import my.webChat.service.ActiveUser;
+import my.webChat.service.FileUtils;
 import my.webChat.service.MessageService;
 import my.webChat.service.UserService;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("messagesAPI")
@@ -39,7 +54,11 @@ public class MessageAPI {
     @Autowired
     ActiveUser activeUser;
 
-    @Resource(name="authenticationManager")
+    @Autowired
+    MessageService service;
+    @Autowired
+    FileUtils fileUtils;
+    @Resource(name = "authenticationManager")
     private AuthenticationManager authManager;
 
     @PostMapping(value = "last", produces = "text/plain")
@@ -51,7 +70,8 @@ public class MessageAPI {
 
     @GetMapping("loginToken")
     public void loginToken(@RequestParam("token") String token,
-                           final HttpServletRequest request, HttpServletResponse response) throws IOException {
+                           final HttpServletRequest request,
+                           HttpServletResponse response) throws IOException {
         User user = userService.getUserByToken(UUID.fromString(token));
         // only as user
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
@@ -64,12 +84,80 @@ public class MessageAPI {
         response.sendRedirect("/form");
     }
 
+    private String makeHTMLFromMessageWithDataImageBase64(Message msg, User user) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(msg.getText());
+        if (!msg.getFileOrigName().isEmpty()) {
+            if (fileUtils.isFileImage(msg.getFileOrigName())) {
+                sb.append("<img src=\"");
+                sb.append("data:");
+                try {
+                    String mimeType = Files.probeContentType(Path.of(msg.getFileOrigName()));
+                    sb.append(mimeType);
+                    sb.append(";base64,");
+                    String image_data = new String(Base64.encodeBase64(service.sendFile(msg.getFileName(), user)),
+                            StandardCharsets.US_ASCII);
+                    sb.append(image_data);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                sb.append("\"></img>");
+            }
+        }
+        sb.append("</html>");
+        return sb.toString();
+    }
+
+    @GetMapping(value = "file", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> messageFile(@RequestParam("token") String token,
+                                              @RequestParam(name = "uuid") String uuid,
+                                              @RequestParam(name = "fileName") String fileName) throws IOException, URISyntaxException {
+        User user = userService.getUserByToken(UUID.fromString(token));
+        HttpHeaders headers = new HttpHeaders();
+        String contentDisposition = "attachment; filename*=UTF-8''" + UriUtils.encodePath(fileName, "UTF-8");
+        headers.set("Content-disposition", contentDisposition);
+        return ResponseEntity.ok().headers(headers).body(service.sendFile(uuid, user));
+    }
+
+    public String getFileNameByDefault(String fileName) {
+        String name = "file" + fileName.substring(fileName.lastIndexOf("."));
+        return name;
+    }
+    private String makeHTMLFromMessage(Message msg, User user, String serverAddress) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(msg.getText());
+        if (!msg.getFileOrigName().isEmpty()) {
+            if (fileUtils.isFileImage(msg.getFileOrigName())) {
+                sb.append("<img src=\"http://");
+                sb.append(serverAddress);
+                sb.append("/messagesAPI/file?token=");
+                sb.append(user.getToken());
+                sb.append("&uuid=");
+                sb.append(msg.getFileName());
+                sb.append("&fileName=");
+                sb.append(getFileNameByDefault(msg.getFileOrigName()));
+                sb.append("\"></img>");
+            }
+        }
+        sb.append("</html>");
+        return sb.toString();
+    }
+
     @PostMapping(value = "messagesafter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserMessage> getMessages(@RequestParam("token") String token, @RequestParam("last") String afterTime) {
+    public List<UserMessage> getMessages(@RequestParam("token") String token,
+                                         @RequestParam("last") String afterTime,
+                                         HttpServletRequest request) {
         User user = userService.getUserByToken(UUID.fromString(token));
         activeUser.updateUser(user);
+        StringBuilder sb = new StringBuilder();
+        sb.append(request.getLocalAddr());
+        sb.append(":");
+        sb.append(Integer.toString(request.getLocalPort()));
+
         return messageService.getUserMessagesAfter(user, afterTime).stream()
-                .map(m -> new UserMessage(m.getText(), m.getCreate(), m.getAuthor().getUsername()))
+                .map(m -> new UserMessage(makeHTMLFromMessage(m, user, sb.toString()), m.getCreate(), m.getAuthor().getUsername()))
                 .collect(Collectors.toList());
     }
 }
