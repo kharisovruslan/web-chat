@@ -46,8 +46,8 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    public void updateVisited(User user) {
-        repository.updateVisitedDateTime(user.getId(), LocalDateTime.now());
+    public void updateVisited(User user, String ipaddress) {
+        repository.updateVisitedDateTime(user.getId(), LocalDateTime.now(), ipaddress);
     }
 
     public void updatePassword(User user, String password) {
@@ -121,5 +121,18 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("User with token " + token + " is disable");
         }
         return user;
+    }
+
+    public void updateUserDepartment(User user, String department) {
+        if (StringUtils.hasText(department)) {
+            user.setDepartment(department);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User userD = (User) userDetails;
+            if(userD.getId().equals(user.getId())) {
+                userD.setDepartment(user.getDepartment());
+            }
+            repository.save(user);
+        }
     }
 }

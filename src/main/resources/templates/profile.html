@@ -48,7 +48,15 @@ and open the template in the editor.
                            th:errors="*{username}"></small>
                 </div>
                 <div class="form-outline mb-4">
-                    <label class="form-label" for="username">token</label>
+                    <label class="form-label" for="department">department</label>
+                    <input type="text" id="department" name="department" th:field="*{department}" readonly="readonly"
+                           class="form-control form-control-lg"
+                           placeholder="Enter a valid department"/>
+                    <small class="dangealert alert-danger" th:if="${#fields.hasErrors('department')}"
+                           th:errors="*{department}"></small>
+                </div>
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="token">token</label>
                     <input type="text" id="token" name="token" th:field="*{token}" readonly="readonly"
                            class="form-control form-control-lg"
                            placeholder="Enter a valid token"/>

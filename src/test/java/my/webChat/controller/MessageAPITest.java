@@ -54,7 +54,9 @@ class MessageAPITest {
         userService.addUser(u3);
         Message m1 = messageService.addMessage("hello", u2, Collections.singleton(u1), "", "", 0);
         Message m2 = messageService.addMessage("hello", u1, Collections.singleton(u2), "", "", 0);
+        Thread.sleep(500);
         Message m3 = messageService.addMessage("hello", u2, Collections.singleton(u3), "", "", 0);
+        Thread.sleep(500);
         Message m4 = messageService.addMessage("hello0", u3, Collections.singleton(u1), "", "", 0);
         Assertions.assertEquals(3, userService.getUsers().size());
         mvc.perform(post("/messagesAPI/last").param("token", u1.getToken().toString())).andDo(print())

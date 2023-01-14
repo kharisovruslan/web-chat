@@ -84,31 +84,6 @@ public class MessageAPI {
         response.sendRedirect("/form");
     }
 
-    private String makeHTMLFromMessageWithDataImageBase64(Message msg, User user) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        sb.append(msg.getText());
-        if (!msg.getFileOrigName().isEmpty()) {
-            if (fileUtils.isFileImage(msg.getFileOrigName())) {
-                sb.append("<img src=\"");
-                sb.append("data:");
-                try {
-                    String mimeType = Files.probeContentType(Path.of(msg.getFileOrigName()));
-                    sb.append(mimeType);
-                    sb.append(";base64,");
-                    String image_data = new String(Base64.encodeBase64(service.sendFile(msg.getFileName(), user)),
-                            StandardCharsets.US_ASCII);
-                    sb.append(image_data);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                sb.append("\"></img>");
-            }
-        }
-        sb.append("</html>");
-        return sb.toString();
-    }
-
     @GetMapping(value = "file", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> messageFile(@RequestParam("token") String token,
                                               @RequestParam(name = "uuid") String uuid,
@@ -124,10 +99,17 @@ public class MessageAPI {
         String name = "file" + fileName.substring(fileName.lastIndexOf("."));
         return name;
     }
+
     private String makeHTMLFromMessage(Message msg, User user, String serverAddress) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
-        sb.append(msg.getText());
+        if (msg.getText().indexOf("<") == -1) {
+            sb.append("<pre>");
+            sb.append(msg.getText());
+            sb.append("</pre>");
+        } else {
+            sb.append(msg.getText());
+        }
         if (!msg.getFileOrigName().isEmpty()) {
             if (fileUtils.isFileImage(msg.getFileOrigName())) {
                 sb.append("<img src=\"http://");

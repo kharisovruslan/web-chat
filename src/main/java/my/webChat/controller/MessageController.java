@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class MessageController {
                                   @RequestParam(value = "size") Optional<Integer> size,
                                   @RequestParam(value = "page") Optional<Integer> page,
                                   @RequestParam(value = "filter", required = false) Optional<String> filter,
-                                  Model model) {
+                                  Model model, HttpServletRequest request) {
         int p = page.orElse(1);
         int s = size.orElse(5);
         String f = filter.orElse("");
@@ -67,7 +68,7 @@ public class MessageController {
         } else {
             pageMessages = service.findAuthorMessageOrMessageForUser(user, PageRequest.of(p - 1, s), f);
         }
-        userService.updateVisited(user);
+        userService.updateVisited(user, request.getRemoteAddr());
         activeUser.updateUser(user);
         model.addAttribute("fileUtils", fileUtils);
         model.addAttribute("userId", user.getId());

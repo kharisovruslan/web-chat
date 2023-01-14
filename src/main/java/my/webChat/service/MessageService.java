@@ -68,7 +68,7 @@ public class MessageService {
     }
 
     public List<Message> getUserMessagesAfter(User user, String afterTime) {
-        LocalDateTime after = LocalDateTime.parse(afterTime, dateTimeFormatter).plusSeconds(2);
+        LocalDateTime after = LocalDateTime.parse(afterTime, dateTimeFormatter).plusNanos(2_000_000);
         List<Message> messages = messageRepository.findDistinctByReceiversAndCreateAfterOrderByCreateDesc(user, after);
         return messages;
     }

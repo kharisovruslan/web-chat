@@ -55,6 +55,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("changeDepartment")
+    public String changeUserDepartmentAdministrator(@RequestParam("useridD") User user,
+                                              @RequestParam("departmentD") String department, Model model) {
+        userService.updateUserDepartment(user, department);
+        return "redirect:/statistics";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("changeToken")
     public String changeTokenAdministrator(@RequestParam("useridCT") User user, Model model) {
         userService.updateToken(user);

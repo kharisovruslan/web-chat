@@ -40,6 +40,7 @@ class UserServiceTest {
                 userPassword, "error encode password");
         User userByName = userService.getByUserName("user");
         Assertions.assertEquals("user", userByName.getUsername());
+        messageRepository.deleteAll();
         userRepository.deleteAll();
         Assertions.assertEquals(0, userRepository.findAll().size());
     }
@@ -69,7 +70,7 @@ class UserServiceTest {
         User su1 = userRepository.save(u1);
         Assertions.assertNull(su1.getVisited());
         int dayOfYear = LocalDateTime.now().getDayOfYear();
-        userService.updateVisited(su1);
+        userService.updateVisited(su1, "127.0.0.1");
         su1 = userRepository.findById(su1.getId()).get();
         Assertions.assertNotNull(su1.getVisited());
         Assertions.assertEquals(dayOfYear, su1.getVisited().getDayOfYear());

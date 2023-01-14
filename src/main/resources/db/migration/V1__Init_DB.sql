@@ -3,6 +3,7 @@ create table chat_users (
        id int8 not null,
         enable boolean,
         password varchar(250),
+        lastipaddress varchar(250),
         token uuid,
         username varchar(50),
         last_visited timestamp,

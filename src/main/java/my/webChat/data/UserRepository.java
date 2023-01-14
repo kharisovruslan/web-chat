@@ -20,6 +20,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE User u SET u.visited = :visited WHERE u.id = :id")
-    void updateVisitedDateTime(@Param(value = "id") long id, @Param(value = "visited") LocalDateTime visited);
+    @Query("UPDATE User u SET u.visited = :visited, u.lastipaddress = :lastipaddress WHERE u.id = :id")
+    void updateVisitedDateTime(@Param(value = "id") long id, @Param(value = "visited") LocalDateTime visited, String lastipaddress);
 }

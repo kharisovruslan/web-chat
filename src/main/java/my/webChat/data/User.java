@@ -33,6 +33,12 @@ public class User implements UserDetails {
     @NonNull
     private String password;
 
+    @Column(name = "lastipaddress")
+    private String lastipaddress;
+
+    @Column(name = "department")
+    private String department;
+
     @Column(name = "lastVisited")
     private LocalDateTime visited;
 

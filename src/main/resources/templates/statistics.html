@@ -43,10 +43,12 @@ and open the template in the editor.
             <table class="table">
                 <thead>
                 <td>User name</td>
+                <td>Department</td>
                 <td>Write messages</td>
                 <td>Visited</td>
                 <td>Token</td>
                 <td>Password</td>
+                <td>Last IP address</td>
                 </thead>
                 <tbody>
                 <tr th:each="s : ${statistics}">
@@ -58,6 +60,17 @@ and open the template in the editor.
                             <input type="hidden" id="useridCUN" name="useridCUN" th:value="${s.user.id}"/>
                             <input type="text" id="usernameCUN" class="form-control"
                                    name="usernameCUN" th:value="${s.user.username}"/>
+                            <input type="submit" th:value="#{button_update}"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/users/changeDepartment}"
+                              th:classappend="${(online.contains(s.user)) ? 'border border-success' : ''}"
+                              method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" id="useridD" name="useridD" th:value="${s.user.id}"/>
+                            <input type="text" id="departmentD" class="form-control"
+                                   name="departmentD" th:value="${s.user.department}"/>
                             <input type="submit" th:value="#{button_update}"/>
                         </form>
                     </td>
@@ -79,6 +92,7 @@ and open the template in the editor.
                             <input type="submit" th:value="#{button_update}"/>
                         </form>
                     </td>
+                    <td th:text="${s.user.lastipaddress}"></td>
                 </tr>
                 </tbody>
             </table>
