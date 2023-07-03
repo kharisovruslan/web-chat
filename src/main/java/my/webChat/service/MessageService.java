@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
-    @Value("upload.folder")
+    @Value("${webchat.folderForFiles}")
     private String uploadFolder;
 
     @Autowired

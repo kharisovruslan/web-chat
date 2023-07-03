@@ -19,12 +19,18 @@ and open the template in the editor.
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="row">
             <div class="col-md-12"><h1 th:text="#{label_registration}">Registration</h1></div>
+            <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="alert-danger" />
             <div class="form-outline mb-4">
-                <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="alert-danger" />
                 <label class="form-label" for="username" th:text="#{label_login}">Login</label>
                 <input type="text" id="username" name="username" th:field="*{username}" class="form-control form-control-lg"
                        placeholder="Enter a valid login name"/>
                 <small class="dangealert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+            </div>
+            <div class="form-outline mb-4">
+                <label class="form-label" for="username" th:text="#{label_department}">Department</label>
+                <input type="text" id="department" name="department" th:field="*{department}" class="form-control form-control-lg"
+                       placeholder="Enter a valid login name"/>
+                <small class="dangealert alert-danger" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></small>
             </div>
             <div class="form-outline mb-4">
                 <label class="form-label" for="password" th:text="#{label_password}">Password</label>

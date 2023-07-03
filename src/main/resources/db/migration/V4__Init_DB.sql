@@ -1,0 +1,1 @@
+alter table message alter column message_text type character varying(5242880);
