@@ -7,6 +7,7 @@ create table chat_users (
         token uuid,
         username varchar(50),
         last_visited timestamp,
+        clientVersion varchar(255),
         primary key (id)
 );
 create table message (
