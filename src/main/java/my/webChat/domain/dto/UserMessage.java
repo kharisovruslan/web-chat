@@ -1,4 +1,4 @@
-package my.webChat.data.dto;
+package my.webChat.domain.dto;
 
 import lombok.Data;
 import lombok.NonNull;

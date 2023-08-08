@@ -1,4 +1,4 @@
-package my.webChat.data;
+package my.webChat.domain;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +41,9 @@ public class User implements UserDetails {
 
     @Column(name = "lastVisited")
     private LocalDateTime visited;
+
+    @Column(name = "clientVersion")
+    private String clientVersion;
 
     @Column(name = "token", columnDefinition = "uuid")
     private UUID token;

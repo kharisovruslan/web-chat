@@ -1,7 +1,7 @@
 package my.webChat;
 
-import my.webChat.data.User;
-import my.webChat.data.UserRepository;
+import my.webChat.domain.User;
+import my.webChat.domain.UserRepository;
 import my.webChat.service.MessageService;
 import my.webChat.service.UserService;
 import org.slf4j.Logger;

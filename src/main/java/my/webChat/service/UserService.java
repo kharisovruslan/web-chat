@@ -1,11 +1,9 @@
 package my.webChat.service;
 
-import my.webChat.data.Role;
-import my.webChat.data.User;
-import my.webChat.data.UserRepository;
+import my.webChat.domain.Role;
+import my.webChat.domain.User;
+import my.webChat.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +15,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -132,6 +129,13 @@ public class UserService implements UserDetailsService {
             if(userD.getId().equals(user.getId())) {
                 userD.setDepartment(user.getDepartment());
             }
+            repository.save(user);
+        }
+    }
+
+    public void updateClientVersion(User user, String version) {
+        if((user.getClientVersion() == null) || (user.getClientVersion().compareTo(version) != 0)) {
+            user.setClientVersion(version);
             repository.save(user);
         }
     }

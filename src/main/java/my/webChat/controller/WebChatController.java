@@ -1,7 +1,7 @@
 package my.webChat.controller;
 
-import my.webChat.data.Message;
-import my.webChat.data.User;
+import my.webChat.domain.Message;
+import my.webChat.domain.User;
 import my.webChat.service.ActiveUser;
 import my.webChat.service.MessageService;
 import my.webChat.service.UserService;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller

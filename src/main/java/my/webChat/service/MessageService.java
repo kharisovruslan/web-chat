@@ -1,9 +1,9 @@
 package my.webChat.service;
 
-import my.webChat.data.Message;
-import my.webChat.data.MessageRepository;
-import my.webChat.data.dto.StatisticsUser;
-import my.webChat.data.User;
+import my.webChat.domain.Message;
+import my.webChat.domain.MessageRepository;
+import my.webChat.domain.dto.StatisticsUser;
+import my.webChat.domain.User;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

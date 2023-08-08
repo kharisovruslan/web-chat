@@ -46,6 +46,7 @@ and open the template in the editor.
                 <td>Department</td>
                 <td>Write messages</td>
                 <td>Visited</td>
+                <td>Client version</td>
                 <td>Token</td>
                 <td>Password</td>
                 <td>Last IP address</td>
@@ -76,6 +77,7 @@ and open the template in the editor.
                     </td>
                     <td th:text="${s.write}"></td>
                     <td th:text="${#temporals.format(s.user.visited, 'dd-MM-yyyy HH:mm')}"></td>
+                    <td th:text="${s.user.clientVersion}"></td>
                     <td>
                         <form th:action="@{/users/changeToken}" method="post">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

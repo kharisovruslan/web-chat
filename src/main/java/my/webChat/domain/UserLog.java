@@ -1,4 +1,4 @@
-package my.webChat.data;
+package my.webChat.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity

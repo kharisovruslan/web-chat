@@ -1,4 +1,4 @@
-package my.webChat.data;
+package my.webChat.domain;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

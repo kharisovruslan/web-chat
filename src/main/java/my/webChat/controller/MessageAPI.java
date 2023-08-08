@@ -1,8 +1,8 @@
 package my.webChat.controller;
 
-import my.webChat.data.Message;
-import my.webChat.data.User;
-import my.webChat.data.dto.UserMessage;
+import my.webChat.domain.Message;
+import my.webChat.domain.User;
+import my.webChat.domain.dto.UserMessage;
 import my.webChat.service.ActiveUser;
 import my.webChat.service.FileUtils;
 import my.webChat.service.MessageService;
@@ -49,9 +49,11 @@ public class MessageAPI {
     private AuthenticationManager authManager;
 
     @PostMapping(value = "last", produces = "text/plain")
-    public String getLast(@RequestParam("token") String token) {
+    public String getLast(@RequestParam("token") String token,
+                          @RequestParam(value = "version", defaultValue = "1.0", required = false) String version) {
         User user = userService.getUserByToken(UUID.fromString(token));
         activeUser.updateUser(user);
+        userService.updateClientVersion(user, version);
         return messageService.getLastTime(user);
     }
 

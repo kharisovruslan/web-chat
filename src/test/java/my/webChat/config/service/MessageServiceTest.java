@@ -1,7 +1,7 @@
 package my.webChat.config.service;
 
-import my.webChat.data.*;
-import my.webChat.data.dto.StatisticsUser;
+import my.webChat.domain.*;
+import my.webChat.domain.dto.StatisticsUser;
 import my.webChat.service.MessageService;
 import my.webChat.service.UserService;
 import org.junit.jupiter.api.AfterEach;

@@ -1,6 +1,6 @@
 package my.webChat.controller;
 
-import my.webChat.data.User;
+import my.webChat.domain.User;
 import my.webChat.exception.ForbiddenException;
 import my.webChat.service.UserLogService;
 import my.webChat.service.UserService;

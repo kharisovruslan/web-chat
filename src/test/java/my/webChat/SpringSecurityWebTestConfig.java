@@ -1,17 +1,14 @@
 package my.webChat;
 
-import my.webChat.data.Role;
-import my.webChat.data.User;
+import my.webChat.domain.Role;
+import my.webChat.domain.User;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @TestConfiguration

@@ -1,7 +1,7 @@
 package my.webChat.service;
 
-import my.webChat.data.UserLog;
-import my.webChat.data.UserLogRepository;
+import my.webChat.domain.UserLog;
+import my.webChat.domain.UserLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;

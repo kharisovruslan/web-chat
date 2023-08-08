@@ -1,8 +1,8 @@
-package my.webChat.data.dto;
+package my.webChat.domain.dto;
 
 import lombok.Data;
 import lombok.NonNull;
-import my.webChat.data.User;
+import my.webChat.domain.User;
 
 @Data
 public class StatisticsUser implements Comparable {

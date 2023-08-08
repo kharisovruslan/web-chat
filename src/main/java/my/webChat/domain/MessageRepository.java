@@ -1,4 +1,4 @@
-package my.webChat.data;
+package my.webChat.domain;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

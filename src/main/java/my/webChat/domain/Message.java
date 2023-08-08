@@ -1,4 +1,4 @@
-package my.webChat.data;
+package my.webChat.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

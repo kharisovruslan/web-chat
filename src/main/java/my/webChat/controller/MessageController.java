@@ -1,7 +1,7 @@
 package my.webChat.controller;
 
-import my.webChat.data.Message;
-import my.webChat.data.User;
+import my.webChat.domain.Message;
+import my.webChat.domain.User;
 import my.webChat.service.ActiveUser;
 import my.webChat.service.FileUtils;
 import my.webChat.service.MessageService;
@@ -18,21 +18,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

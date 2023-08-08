@@ -1,11 +1,9 @@
 package my.webChat.service;
 
-import my.webChat.data.User;
-import org.springframework.data.util.Pair;
+import my.webChat.domain.User;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;

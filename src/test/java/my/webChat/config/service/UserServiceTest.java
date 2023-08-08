@@ -1,10 +1,9 @@
 package my.webChat.config.service;
 
-import my.webChat.controller.MessageAPI;
-import my.webChat.data.MessageRepository;
-import my.webChat.data.Role;
-import my.webChat.data.User;
-import my.webChat.data.UserRepository;
+import my.webChat.domain.MessageRepository;
+import my.webChat.domain.Role;
+import my.webChat.domain.User;
+import my.webChat.domain.UserRepository;
 import my.webChat.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Set;
