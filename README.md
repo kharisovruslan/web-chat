@@ -1,98 +1,96 @@
 # Web Chat
 
+A responsive and secure web application for real-time messaging, file sharing, and user management within local networks.
+
 ---
 
-## Description
-Web chat is a application for chatting all messages will be save on server in database. 
-This application was created by Spring Framework. Application used for: exchange text messages and files, 
-keep all messages in database on server and find written messages in history. 
-Administrator (first user get Administrator role) can change users names, passwords, and tokens 
-(used for fast users authorization), see statistics about users and remove self messages. Then application 
-open in brower Messages update automatically. Users can self registration. In browser new message loading automatically 
-with javascript from server. Every 15 seconds web page check if where a new messages and if find show them. 
-Application is pageable on page show five message if there more messages then you can choose page. 
-Use localization all you languages.
+## 🚀 Features
 
-![Application window](./src/test/resources/images/Frame.png)
-![Application window](./src/test/resources/images/Frame1.png)
-![Application window](./src/test/resources/images/login.png)
-![Application window](./src/test/resources/images/regsiteration.png)
-![Application window](./src/test/resources/images/registrationShortPassword.png)
-![Application window](./src/test/resources/images/registrationExistUserName.png)
-![Application window](./src/test/resources/images/Profile.png)
-![Application window](./src/test/resources/images/Search.png)
-![Application window](./src/test/resources/images/Statistics.png)
+* **Real-Time Updates**: Automatic message polling via JavaScript (every 15 seconds) ensures chat updates without full page reloads.
+* **User Management & Roles**: The first registered user automatically grants Administrator privileges. Administrators can manage user profiles (names, passwords, tokens) and view system statistics.
+* **Pagination & History**: Chat history is cleanly organized into pages (5 messages per page) with a built-in search functionality.
+* **File Exchange**: Integrated file sharing capabilities. Uploaded files are securely stored with unique UUIDs. The default file size limit is **8MB** (configurable in `application.properties`).
+* **Presence Tracking**: Visual status indicators show whether a user is online (green frame) or offline (red frame). Hovering over a username displays their last visited timestamp.
+* **Flexible Authentication**: Secure login via traditional credentials or personal authentication tokens (ideal for rapid login via bookmarks).
+* **Offline Messaging**: Send messages to offline users; they will be instantly available upon their next login.
+* **External Integration API**: Features a lightweight API for observing new messages, built specifically to power the external ***web-chat-notification*** desktop client.
+* **Production Readiness**: Pre-configured with Spring Boot Actuator for application monitoring and metrics out of the box.
+* **Localization**: Full support for multi-language interfaces and localization.
 
-## Features
- + Exchange messages
- + Save date last visited user if you cursor over username you can see date of last visit user
- + Color of frame active users is green for other red
- + Exchange files (file size limited **8M** if you need more you can change limite in file application.properties) 
-files for name get uuid and they names saves in database
- + Save all messages in database for keeping and search (default use embedded *hsqldb* but you can use other)
- + Send messages for offline users (then user connect then messages will be showed)
- + Application has api for observe new message if new message will be find other program ***webChatNotification*** show them
- + Authorization on password and token you can make a bookmarks or links for automatic authorization
- + Support localization
- + Use actuator you can go to [http://localhost:8080/actuator](http://localhost:8080/actuator) and see information of application
+---
 
-## Warning
-This application creates for local network and all users of network can connect and register here.
+## 📸 Screenshots
 
-If you want protect your data you need config application to use flyway and use external database as Postgresql.
-For config application you need make directory config and input file application.properties with you
-settings in this directory. As example you can use application.properties from this project.
+<p align="center">
+  <img src="./src/test/resources/images/Frame.png" alt="Main Chat Window" width="45%"/>
+  <img src="./src/test/resources/images/Frame1.png" alt="Chat Workspace" width="45%"/>
+</p>
+<p align="center">
+  <img src="./src/test/resources/images/login.png" alt="Login Page" width="45%"/>
+  <img src="./src/test/resources/images/regsiteration.png" alt="Registration Form" width="45%"/>
+</p>
+<p align="center">
+  <img src="./src/test/resources/images/Profile.png" alt="User Profile" width="45%"/>
+  <img src="./src/test/resources/images/Search.png" alt="Message Search" width="45%"/>
+</p>
+<p align="center">
+  <img src="./src/test/resources/images/Statistics.png" alt="Admin Dashboard Statistics" width="60%"/>
+</p>
 
-## Quick start
+---
 
-### Compile
-You can make application from source you need for assembling JDK 11 or later, maven, git:
+## 🛠️ Tech Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Backend Framework** | Spring Boot (MVC, Security, Data JPA, Actuator) |
+| **Language & Core** | Java 11 / Java 17 (Optionals, LocalDateTime, Lombok) |
+| **Database & Migration** | HSQLDB (Embedded default), PostgreSQL support, Flyway |
+| **Frontend Templates** | Thymeleaf, HTML5 (with data validation) |
+| **UI Framework** | Bootstrap |
+| **Client Scripting** | JavaScript, jQuery |
+
+---
+
+## ⚠️ Important Deployment Notes
+
+By default, this application binds to all network interfaces and is optimized for local area networks (LAN).
+
+To secure your production data:
+1. Enable **Flyway** migrations.
+2. Switch from the embedded HSQLDB to a dedicated production database like **PostgreSQL**.
+3. Create an external `/config` directory relative to your application root and place your production `application.properties` file inside it to override default settings safely.
+
+---
+
+## 🏁 Quick Start
+
+### Prerequisites
+Ensure you have the following tools installed locally:
+* [JDK 11 or later (JDK 17 recommended)](https://adoptium.net/)
+* [Apache Maven](https://maven.apache.org/)
+* [Git](https://git-scm.com/)
+
+### 1. Clone & Build
+Execute the following commands in your terminal to build the executable JAR file:
 
 ```bash
-    git clone https://github.com/kharisovruslan/webChat
-    cd webChat
-    mvn package
-    cd target
+git clone https://github.com/kharisovruslan/web-chat
+cd web-chat
+mvn clean package
+cd target
 ```
 
-### Start application
-To start start jar file. Application create directory database with embedded database and uploadfiles with files upload 
-to server with messages.
+### 2. Run the Application
+Start the application using the generated JAR file. On launch, the server will automatically generate a `/database` folder for HSQLDB and an `/uploadfiles` directory for chat attachments.
 
 ```bash
-    java -jar webChat-2.0.0-SNAPSHOT.jar
+java -jar web-chat-2.0.0-SNAPSHOT.jar
 ```
 
-### Open application
-After Application was run you can open in web browser page [http://localhost:8080/](http://localhost:8080/). 
-You can register user with administrator role (have access to change username password and tokens). 
-Next users got user role. Application listen all you network interfaces you can connect from your local network.
+### 3. Access the Application
+Open your web browser and navigate to: **[http://localhost:8080/](http://localhost:8080/)**
 
-For it you need install [jdk 17](https://adoptium.net/) [maven](https://maven.apache.org/) [git](https://git-scm.com/) 
-## Technologies
-- Java 11:
-  - Spring Framework:
-    - Spring MVC:
-      - application-level on the basis on design pattern: model-view-controller
-    - Spring Data:
-      - using JPQL and ready-made methods from `JpaRepository` to creating, reading, updating and deleting data
-      - implementation of native queries
-    - Spring Security:
-      - own login and registration form with authentication of users on the basis of database
-    - Spring Boot:
-      - automatic configuration and launching application 
-  - JPA & Hibernate:
-    - specifying relations between entities in database and parameters of columns in tables
-  - Java 11:
-    - Optionals, LocalDateTime
-- HSQLDB default embedded database you can use postgresql or ther database choose in application.properties and in pom.xml choose driver
-- Flyway for control database
-- Database
-  - HSQLDB
-- HTML:
-  - Thymeleaf
-  - data validation in login form and registration form
-- CSS:
-  - BootStrap
-- JavaScript
-  - JQuery
+* **First User**: Register your account immediately to claim the **Administrator** role.
+* **Subsequent Users**: Will receive standard **User** permissions upon registration.
+* **Monitoring**: Access application metrics and health checks at **[http://localhost:8080/actuator](http://localhost:8080/actuator)**.
